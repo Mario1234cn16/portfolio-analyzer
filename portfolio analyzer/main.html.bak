@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    </head>
+    <body>
+        <input type="text" id="publicKey" style="border:1px solid black;">
+        <button id="testButton" onClick="getOwnedNFTs()">test</button>
+        <script>
+
+async function getOwnedNFTs() {
+        const publicKeyStr = document.getElementById('publicKey').value;
+        const publicKey = new solanaWeb3.PublicKey(publicKeyStr);
+        const connection = new solanaWeb3.Connection('https://solana-mainnet.g.alchemy.com/v2/-Z3YvzeM0tpHH2xFyeUqPympyqRIFEQL');
+        const ownedTokens = await connection.getParsedTokenAccountsByOwner(
+    publicKey,
+    {
+      programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
+    }
+  );
+        const ownedNFTs = ownedTokens.value.map((token) => token.account.data.parsed.info.mint);
+        console.log(ownedNFTs);
+      }
+        </script>
+    </body>
+</html>
